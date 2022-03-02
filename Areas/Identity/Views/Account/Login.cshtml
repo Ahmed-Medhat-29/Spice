@@ -1,0 +1,31 @@
+﻿@model LoginViewModel
+@{
+	ViewBag.title = "Login";
+	var returnUrl = Context.Request.Query["returnurl"];
+}
+
+<form method="post" asp-action="Login" asp-route-returnurl="@returnUrl">
+	<div class="border background-white mt-5">
+		<h2 class="text-info ml-md-3">Login</h2>
+		<div class="row">
+			<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+				<div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+				<div class="form-group">
+					<label asp-for="Email" class="col-form-label"></label>
+					<input asp-for="Email" class="form-control" />
+					<span asp-validation-for="Email" class="text-danger d-block"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Password" class="col-form-label">Password</label>
+					<input type="password" asp-for="Password" class="form-control" />
+					<span asp-validation-for="Password" class="text-danger d-block"></span>
+				</div>
+				<button type="submit" class="btn btn-success px-4 my-3">Enter</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts{
+	@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

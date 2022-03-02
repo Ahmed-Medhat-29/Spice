@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Coupon>
+@{
+	ViewData["Title"] = "Coupons";
+}
+
+<div class="mt-5 border background-white">
+	<div class="row mb-4">
+		<div class="col-6">
+			<h3 class="text-info">Coupon List</h3>
+		</div>
+		<div class="col-6 text-right">
+			<partial name="_CreateButtonPartial" />
+		</div>
+	</div>
+	@if(Model.Any())
+	{
+		<table class="table table-responsive-lg table-striped border mb-0">
+			<tr class="table-secondary">
+				<th>Name</th>
+				<th>Discount</th>
+				<th>Minimum Amount</th>
+				<th>Active Status</th>
+				<th></th>
+			</tr>
+			@foreach(var coupon in Model)
+			{
+				<tr>
+					<td>
+						@coupon.Name
+					</td>
+					<td>
+						@coupon.Discount
+					</td>
+					<td>
+						@coupon.MinimumAmount
+					</td>
+					<td>
+						@coupon.IsActive
+					</td>
+					<td>
+						<div class="float-right">
+							<partial name="_TableButtonPartial" model="@coupon.Id" />
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<h4 class="text-center">No Coupons Exist</h4>
+	}
+</div>

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<OrderHeader>
+@using Spice.Utility
+@{
+	ViewData["Title"] = "Mange Orders";
+}
+
+<h2 class="text-info mt-3">Manage Orders</h2>
+<div class="background-white border mt-4">
+	<div class="container">
+		@if(Model.Any())
+		{
+			@foreach(var item in Model)
+			{
+				<div class="row border rounded p-3 bg-light @(item != Model.Last() ? "mb-3" : "")">
+					<div class="col-md-6 col-lg-4">
+						<h5>Order Number : @item.Id</h5>
+						<ul class="text-info">
+							@foreach(var orderItem in item.OrderDetails)
+							{
+								<li>@orderItem.Name X @orderItem.Count</li>
+							}
+						</ul>
+					</div>
+					<div class=" col-md-6 col-lg-4">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Time</span>
+							</div>
+							<input class="form-control bg-white" disabled value="@item.PickupTime" />
+						</div>
+						<textarea disabled class="form-control bg-white">@(string.IsNullOrWhiteSpace(item.Comments) ? "No additional instructions" : item.Comments)</textarea>
+					</div>
+					<div class="col-md-12 col-lg-3 offset-lg-1 mt-3 mt-lg-0">
+						<form method="post">
+							<div class="row">
+								<div class="col-12 col-md-6 col-lg-12 order-md-1 order-lg-0">
+									@if(item.OrderStatus == StaticDetails.StatusSubmitted)
+									{
+										<button class="btn btn-info form-control mb-2" asp-action="PrepareOrder" asp-route-Id="@item.Id">
+											<i class="fas fa-check"></i> &nbsp; Start Cooking
+										</button>
+									}
+									else if(item.OrderStatus == StaticDetails.StatusInProgress)
+									{
+										<button class="btn btn-success form-control mb-2" asp-action="ReadyOrder" asp-route-Id="@item.Id">
+											<i class="fas fa-flag-checkered"></i> &nbsp; Order Ready
+										</button>
+									}
+								</div>
+								<div class="col-12 col-md-6 col-lg-12 order-md-0 order-lg-1">
+									<button class="btn btn-danger form-control" asp-action="CancelOrder" asp-route-Id="@item.Id">
+										<i class="fas fa-times"></i> &nbsp;	Cancel Order
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			}
+		}
+		else
+		{
+			<h4 class="text-center">No Orders Exist</h4>
+		}
+	</div>
+</div>

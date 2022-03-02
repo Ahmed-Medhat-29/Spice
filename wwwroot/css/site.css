@@ -1,0 +1,78 @@
+﻿/* ----------- Sticky footer styles ----------- */
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	padding-bottom: 40px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	line-height: 40px;
+}
+
+/* ----------- Customs ----------- */
+.grey-background {
+	background: url('../img/dust_scratches.png');
+}
+
+.background-white {
+	background-color: white;
+	padding: 30px;
+	border-radius: 10px;
+}
+
+.validation-summary-errors ul {
+	margin-bottom: 0;
+}
+
+.input-validation-error {
+	border-color: #dc3545 !important;
+	box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+table th, table td {
+	vertical-align: middle !important;
+	white-space: nowrap !important;
+}
+
+.width-125px {
+	width: 125px;
+}
+
+#datepicker, #timepicker {
+	background-color: white;
+}
+
+/* ----------- Queries ----------- */
+/* xs */
+.border-sm-bottom-md-right, .border-sm-bottom-lg-right {
+	border-bottom: 1px solid #dee2e6;
+}
+
+@media (max-width: 548px) {
+	.mytable-responsive {
+		display:block;
+		overflow-x:auto;
+	}
+}
+
+/* md */
+@media (min-width: 768px) {
+	.border-sm-bottom-md-right {
+		border-bottom: 0;
+		border-right: 1px solid #dee2e6;
+	}
+}
+
+/* lg */
+@media (min-width: 992px) {
+	.border-sm-bottom-lg-right {
+		border-bottom: 0;
+		border-right: 1px solid #dee2e6;
+	}
+}

@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<ul class="navbar-nav">
+	@if(User.IsInRole(Spice.Utility.StaticDetails.Manager))
+	{
+		<li class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+				Content Management
+			</a>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+				<a class="dropdown-item" asp-area="Admin" asp-controller="SubCategory" asp-action="Index">Sub Category</a>
+				<a class="dropdown-item" asp-area="Admin" asp-controller="MenuItem" asp-action="Index">MenuItem</a>
+				<a class="dropdown-item" asp-area="Admin" asp-controller="Coupon" asp-action="Index">Coupons</a>
+				<a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
+			</div>
+		</li>
+	}
+
+	@if(User.IsInRole(Spice.Utility.StaticDetails.Manager) ||
+		User.IsInRole(Spice.Utility.StaticDetails.Kitchen) ||
+		User.IsInRole(Spice.Utility.StaticDetails.FrontDesk))
+	{
+		<li class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+				Orders
+			</a>
+			<div class="dropdown-menu">
+				@if(User.IsInRole(Spice.Utility.StaticDetails.Manager) ||
+					User.IsInRole(Spice.Utility.StaticDetails.Kitchen))
+				{
+					<a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="ManageOrders">Manage Orders</a>
+
+				}
+				@if(User.IsInRole(Spice.Utility.StaticDetails.Manager) ||
+					User.IsInRole(Spice.Utility.StaticDetails.FrontDesk))
+				{
+					<a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="OrderPickup">Order Pickup</a>
+				}
+			</div>
+		</li>
+	}
+	<li class="nav-item">
+		<a class="nav-link pr-0" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+			<i class="fas fa-shopping-cart"></i> (@(HttpContextAccessor.HttpContext.Session.GetInt32(StaticDetails.CartCount) ?? 0))
+		</a>
+	</li>
+</ul>
+<ul class="navbar-nav ml-auto">
+	@if(User.Identity.IsAuthenticated)
+	{
+		<li class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+				@User.Identity.Name
+			</a>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="History">Order History</a>
+				<form method="post" id="logoutForm" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+					<a href="javascript:document.getElementById('logoutForm').submit()" class="text-danger dropdown-item">Logout</a>
+				</form>
+			</div>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
+		</li>
+	}
+</ul>

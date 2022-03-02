@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Spice</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/fontawesome-free-5.9.0-web/css/all.min.css" />
+	<link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+	<link href="~/css/jquery.timepicker.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="grey-background">
+	<header class="bg-dark">
+		<nav class="navbar navbar-dark navbar-expand-md">
+			<div class="container">
+				<a class="navbar-brand pb-2" asp-area="Customer" asp-controller="Home" asp-action="Index">
+					<img src="~/img/spicy.png" class="img-fluid" />	Spice
+				</a>
+				<button class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse">
+					<partial name="_LoginPartial" />
+				</div>
+			</div>
+		</nav>
+	</header>
+	<main class="container pb-4">
+		@RenderBody()
+	</main>
+	<footer class="bg-dark">
+		<div class="container text-white-50">&copy; 2021 - Spice</div>
+	</footer>
+	<script src="~/lib/jquery/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+	@RenderSection("Scripts", required: false)
+</body>
+</html>

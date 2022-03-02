@@ -1,0 +1,103 @@
+﻿@model MenuItemViewModel
+@{
+	ViewData["Title"] = "Create Menu Item";
+}
+
+<h2 class="text-info my-5">Create Menu Item</h2>
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+	<div class="border background-white">
+		<div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger">	</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.Name" class="col-form-label"></label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<input asp-for="MenuItem.Name" class="form-control" />
+				<span asp-validation-for="MenuItem.Name" class="text-danger d-block"></span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.Description" class="col-form-label"></label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<textarea asp-for="MenuItem.Description" class="form-control"></textarea>
+				<span asp-validation-for="MenuItem.Description" class="text-danger d-block"></span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.Price" class="col-form-label"></label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<input asp-for="MenuItem.Price" class="form-control" />
+				<span asp-validation-for="MenuItem.Price" class="text-danger d-block"></span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label class="col-form-label">Category</label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<select id="CategoryId" asp-items="@(new SelectList(Model.Categories,"Id","Name"))" class="form-control"></select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.SubCategoryId" class="col-form-label">Sub Category</label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<select asp-for="MenuItem.SubCategoryId" id="SubCategoryId" asp-items="@(new SelectList(string.Empty,"Id","Name"))" class="form-control"></select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.Spicyness" class="col-form-label"></label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<select asp-for="MenuItem.Spicyness" class="form-control">
+					@for(int i = 0; i < StaticDetails.SpicynessLevels.Length; i++)
+					{
+						<option value="@i">@StaticDetails.SpicynessLevels[i]</option>
+					}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-4">
+				<label asp-for="MenuItem.Image" class="col-form-label"></label>
+			</div>
+			<div class="col-md-9 col-lg-5 col-8">
+				<input type="file" name="file" class="form-control-file" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-9 col-lg-5 offset-md-3 col-12">
+				<partial name="_CreateAndBackToListPartial" />
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts{
+	@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script>
+		$(document).ready(function () {
+			getSubCategories();
+			$('#CategoryId').change(function () {
+				getSubCategories();
+			});
+		});
+
+		function getSubCategories() {
+			$.getJSON('@(Url.Content("~/"))'+"Admin/SubCategory/GetSubCategoriesIncludeId", { id: $("#CategoryId").val() }, function (data) {
+				$("#SubCategoryId").empty();
+				var items = '';
+				$.each(data, function (i, subcategory) {
+					items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+				});
+				$("#SubCategoryId").html(items);
+			});
+		}
+	</script>
+}

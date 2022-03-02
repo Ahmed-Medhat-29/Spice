@@ -1,0 +1,71 @@
+﻿@model SubCategory
+@{
+	ViewData["Title"] = "Edit Sub Category";
+}
+
+<h2 class="text-info my-5">Edit Sub Category</h2>
+<form method="post" asp-action="Edit" asp-route-Id="@Model.Id">
+	<div class="border background-white">
+		<div class="row">
+			<div class="col-12 col-md-8 border-sm-bottom-md-right">
+				<div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger">	</div>
+				<div class="form-group row">
+					<div class="col-md-3 col-4">
+						<label asp-for="CategoryId" class="col-form-label">Category</label>
+					</div>
+					<div class="col-md-9 col-lg-7 col-8">
+						<select id="CategoriesSelectList" asp-for="CategoryId" readonly asp-items="@(new SelectList(new[] { Model.Category },"Id","Name"))" class="form-control"></select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-md-3 col-4">
+						<label asp-for="Name" class="col-form-label"></label>
+					</div>
+					<div class="col-md-9 col-lg-7 col-8">
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger d-block"></span>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-md-9 col-lg-7 offset-md-3 col-12">
+						<partial name="_EditAndBackToListPartial" />
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-4 mt-2 mt-md-0">
+				<h6 class="text-center">Existing sub categories</h6>
+				<ul id="SubCategoriesList" class="px-4"></ul>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts{
+	@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script>
+		function updateSubCategoryList() {
+			var selectedCategoryId = document.getElementById("CategoriesSelectList").value;
+			var list = $('#SubCategoriesList')
+			$.ajax({
+				url: '/Admin/SubCategory/GetSubCategory/' + selectedCategoryId,
+				type: 'GET',
+				dataType: 'text',
+				success: function (data) {
+					results = JSON.parse(data);
+					list.html('');
+					if (results.length > 0) {
+						for (i in results) {
+							list.append('<li>' + results[i] + '</li>');
+						}
+					} else {
+						list.append('No sub categories in this category');
+					}
+				}
+			})
+		}
+
+		$(document).ready(function () {
+			updateSubCategoryList();
+		});
+	</script>
+}

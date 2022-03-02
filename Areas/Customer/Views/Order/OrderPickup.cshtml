@@ -1,0 +1,119 @@
+﻿@model IEnumerable<OrderHeader>
+@{
+	ViewData["Title"] = "Orders Ready For Pickup";
+}
+
+<div class="mt-5 border background-white">
+	<div class="mb-4">
+		<h3 class="text-info">Orders Ready For Pickup</h3>
+	</div>
+	<form method="get" asp-action="OrderPickup">
+		<div class="mb-3">
+			<div class="row">
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+					<input class="form-control" name="SearchName" placeholder="Name..." />
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+					<input class="form-control" name="SearchEmail" placeholder="Email..." />
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+					<input class="form-control" name="SearchNumber" placeholder="Pickup Number..." />
+				</div>
+				<div class="col-6 col-lg-4 col-xl-3 ml-auto">
+					<button class="btn btn-info form-control">
+						<i class="fas fa-search"></i> Search
+					</button>
+				</div>
+			</div>
+		</div>
+	</form>
+	@if(Model.Any())
+	{
+		<table class="table table-responsive-lg table-striped border mb-0">
+			<tr class="table-secondary">
+				<th>ID</th>
+				<th>Pickup Name</th>
+				<th>Pickup Number</th>
+				<th>Pickup Time</th>
+				<th>Order Total</th>
+				<th></th>
+			</tr>
+			@foreach(var order in Model)
+			{
+				<tr>
+					<td>
+						@order.Id
+					</td>
+					<td>
+						@order.PickupName
+					</td>
+					<td>
+						@order.PickupNumber
+					</td>
+					<td>
+						@order.PickupTime.ToShortDateString()
+						@order.PickupTime.ToShortTimeString()
+					</td>
+					<td>
+						$ @order.OrderTotal
+					</td>
+					<td>
+						<div class="float-right">
+							<button type="button" class="btn btn-success anchorDetails" data-id="@order.Id" data-toggle="modal" data-target="#myModal">
+								<i class="far fa-list-alt"></i> Details
+							</button>
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+
+		<div class="modal fade" id="myModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header bg-success text-light">
+						<h5 class="modal-title text-center">Order Details</h5>
+						<button class="float-right btn btn-success close" style="color: white" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<form method="post" asp-action="ConfirmOrderPickup">
+						<div class="modal-body" id="myModalContent">
+
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-success px-5 mx-auto">
+								<i class="far fa-thumbs-up"></i> &nbsp; Confirm Pickup
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		<h4 class="text-center mt-4">No Orders exist</h4>
+	}
+</div>
+
+@section Scripts{
+	<script>
+		$(function () {
+			$('.anchorDetails').click(function () {
+				$.ajax({
+					type: "GET",
+					url: '/Customer/Order/OrderDetails',
+					data: { "Id": $(this).attr('data-id') },
+					success: function (data) {
+						$('#myModalContent').html(data);
+						$('#myModal').modal("show");
+					},
+					error: function () {
+						alert("Content loading failed");
+					}
+				});
+			});
+		});
+	</script>
+}

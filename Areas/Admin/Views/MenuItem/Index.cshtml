@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MenuItem>
+@{
+	ViewData["Title"] = "Menu Items";
+}
+
+<div class="mt-5 border background-white">
+	<div class="row mb-md-4 mb-2">
+		<div class="col-md-6 col-12">
+			<h3 class="text-info">Menu Item List</h3>
+		</div>
+		<div class="col-md-6 col-12 text-right">
+			<partial name="_CreateButtonPartial" />
+		</div>
+	</div>
+	@if(Model.Any())
+	{
+		<table class="table table-responsive-md table-striped border mb-0">
+			<tr class="table-secondary">
+				<th>Name</th>
+				<th>Price</th>
+				<th>Category</th>
+				<th>Sub Category</th>
+				<th></th>
+			</tr>
+			@foreach(var item in Model)
+			{
+				<tr>
+					<td>
+						@item.Name
+					</td>
+					<td>
+						@item.Price
+					</td>
+					<td>
+						@item.SubCategory.Category.Name
+					</td>
+					<td>
+						@item.SubCategory.Name
+					</td>
+					<td>
+						<div class="float-right">
+							<partial name="_TableButtonPartial" model="@item.Id" />
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<h4 class="text-center">No Menu Items Exist</h4>
+	}
+</div>

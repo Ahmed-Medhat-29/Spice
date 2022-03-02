@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MenuItem>
+
+@if(Model.Any())
+{
+	<h2 class="text-success">@Model.First().SubCategory.Category.Name</h2>
+	@foreach(var menuItem in Model)
+	{
+		<div class="row border border-info rounded my-4">
+			<div class="col-md-5 col-lg-4 col-xl-3 p-0">
+				<img src="@(menuItem.Image ?? "/img/" + @StaticDetails.DefaultFoodImage)" width="100%" height="100%" />
+			</div>
+			<div class="col-md-7 col-lg-8 col-xl-9 mt-2 position-relative" style="padding-bottom:70px">
+				<h4 class="d-inline-block text-info">
+					@menuItem.Name
+					@if(menuItem.Spicyness != Array.IndexOf(StaticDetails.SpicynessLevels, "Not Applicable"))
+					{
+						<img src=@("/img/" + (menuItem.Spicyness == 1 ? "mild.png" :
+							menuItem.Spicyness == 2 ? "spicy.png" :	"veryspicy.png")) />
+					}
+				</h4>
+				<h4 class="d-inline-block text-danger float-right">$ @menuItem.Price</h4>
+				<div class="d-none d-md-block m-1">
+					@menuItem.Description
+				</div>
+				<a class="btn btn-success px-5 float-right position-absolute" style="bottom: 15px; right: 15px" asp-area="Customer" asp-action="Details" asp-route-Id="@menuItem.Id">Details</a>
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<SubCategory>
+@{
+	ViewData["Title"] = "Sub Categories";
+}
+
+<div class="mt-5 border background-white">
+	<div class="row mb-md-4 mb-2">
+		<div class="col-md-6 col-12">
+			<h3 class="text-info">Sub Category List</h3>
+		</div>
+		<div class="col-md-6 col-12 text-right">
+			<partial name="_CreateButtonPartial" />
+		</div>
+	</div>
+	@if(Model.Any())
+	{
+		<table class="table mytable-responsive table-striped border mb-0">
+			<tr class="table-secondary">
+				<th>Sub Category</th>
+				<th>Category</th>
+				<th></th>
+			</tr>
+			@foreach(var subCategory in Model)
+			{
+				<tr>
+					<td>
+						@subCategory.Name
+					</td>
+					<td>
+						@subCategory.Category.Name
+					</td>
+					<td>
+						<div class="float-right">
+							<partial name="_TableButtonPartial" model="@subCategory.Id" />
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<h4 class="text-center">No Sub Categories Exist</h4>
+	}
+</div>

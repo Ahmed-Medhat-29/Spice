@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+	ViewData["Title"] = "Users";
+}
+
+<div class="mt-5 border background-white">
+	<div class="row mb-4">
+		<div class="col-6">
+			<h3 class="text-info">User List</h3>
+		</div>
+		<div class="col-6 text-right">
+			<a class="btn btn-info" asp-area="Identity" asp-controller="Account" asp-action="Register">
+				<i class="fas fa-plus"></i> &nbsp; Create New
+			</a>
+		</div>
+	</div>
+	@if(Model.Any())
+	{
+		<table class="table table-responsive-md table-striped border mb-0">
+			<tr class="table-secondary">
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone Number</th>
+				<th></th>
+			</tr>
+			@foreach(var user in Model)
+			{
+				<tr>
+					<td>
+						@user.Name
+					</td>
+					<td>
+						@user.Email
+					</td>
+					<td>
+						@user.PhoneNumber
+					</td>
+					<td>
+						<div class="float-right">
+							<form method="post">
+								@if(user.LockoutEnd == null || user.LockoutEnd < DateTime.Now || !user.LockoutEnabled)
+								{
+									<button class="btn btn-success" asp-action="Lock" asp-route-Id="@user.Id">
+										<i class="fas fa-lock-open"></i>
+									</button>
+								}
+								else
+								{
+									<button class="btn btn-danger" asp-action="UnLock" asp-route-Id="@user.Id">
+										<i class="fas fa-lock"></i>
+									</button>
+								}
+							</form>
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<h4 class="text-center">No Users Exist</h4>
+	}
+</div>
