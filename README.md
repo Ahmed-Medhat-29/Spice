@@ -1,7 +1,7 @@
-#Spice
+# Spice
 This project is for exercise and educational purposes
 
-##Features
+## Features
 - Using C# Programming Language
 - Using Sql Server as a database engine
 - Using Entity Framework as an ORM
