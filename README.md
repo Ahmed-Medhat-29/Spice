@@ -16,5 +16,7 @@ This project is for exercise and educational purposes
 - customer@gmail.com
 - manager@spice.com
 
-#### Note :
-The password for each user is the same as his email
+### Notes :
+- The password for each user is the same as his email
+- Don't forget to add your local connection string after restoring the database backup (sql server 2016)
+- Stripe api keys are needed for payment testing
